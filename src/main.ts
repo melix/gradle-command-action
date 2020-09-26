@@ -7,11 +7,13 @@ import * as cacheWrapper from './cache-wrapper'
 import * as execution from './execution'
 import * as gradlew from './gradlew'
 import * as provision from './provision'
+import * as init from './init-scripts'
 
 // Invoked by GitHub Actions
 export async function run(): Promise<void> {
     try {
         const baseDirectory = process.env[`GITHUB_WORKSPACE`] || ''
+        await initScript()
 
         const result = await execution.execute(
             await resolveGradleExecutable(baseDirectory),
@@ -72,4 +74,13 @@ function resolveBuildRootDirectory(baseDirectory: string): string {
 function parseCommandLineArguments(): string[] {
     const input = github.inputOrNull('arguments')
     return input === null ? [] : parseArgsStringToArgv(input)
+}
+
+async function initScript(): Promise<void> {
+    const useInit = github.inputBoolean('export-resolved-dependencies')
+    if (useInit) {
+        core.info('Resolved dependencies export is activated')
+        await init.writeInitScript()
+    }
+    return
 }

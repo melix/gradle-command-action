@@ -30,6 +30,15 @@ jobs:
         dependencies-cache-enabled: true
         configuration-cache-enabled: true
         arguments: test --configuration-cache
+    - name: Test dependency resolution dump
+      uses: ./
+      with:
+        gradle-version: rc
+        build-root-directory: __tests__/data/library
+        dependencies-cache-enabled: true
+        configuration-cache-enabled: true
+        export-resolved-dependencies: true
+        arguments: test
     - name: Stop Gradle daemon
       uses: ./
       with:

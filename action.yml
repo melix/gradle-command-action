@@ -41,6 +41,9 @@ inputs:
   configuration-cache-exact:
     description: Whether to restore only if exact match, default to 'false'
     required: false
+  export-resolved-dependencies:
+    description: Export the dependencies resolved during the build to a json file, default to 'false'
+    required: false
 
 outputs:
   build-scan-url:
